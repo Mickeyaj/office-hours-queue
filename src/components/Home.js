@@ -10,12 +10,12 @@ function Home() {
             <p>Select your role to continue</p>
 
             <div className="role-selection">
-                <button className="role-btn professor-btn" onClick={() => navigate('/professor')}>
+                <button className="role-btn professor-btn" onClick={() => navigate('/professor/login')}>
                     <h2>Professor</h2>
                     <p>Create and manage office hours</p>
                 </button>
 
-                <button className="role-btn student-btn" onClick={() => navigate('/student')}>
+                <button className="role-btn student-btn" onClick={() => navigate('/student/login')}>
                     <h2>Student</h2>
                     <p>Join office hours queue</p>
                 </button>
