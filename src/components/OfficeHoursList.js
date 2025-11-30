@@ -4,6 +4,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 
 function OfficeHoursList () {
     const [officeHours, setOfficeHours] = useState([]);
+    const [selectedOfficeHour, setSelectedOfficeHour] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onSnapshot(collection(db, 'officeHours'), (snapshot) => {
@@ -21,6 +22,14 @@ function OfficeHoursList () {
         return () => unsubscribe();
     }, []);
 
+    const handleViewQueue = (officeHourId) => {
+        if (selectedOfficeHour === officeHourId) {
+            setSelectedOfficeHour(null);
+        } else {
+            setSelectedOfficeHour(officeHourId);
+        }
+    };
+
     return (
         <div className="office-hours-list">
             <h2>My Office Hours</h2>
@@ -35,6 +44,17 @@ function OfficeHoursList () {
                             <p><strong>Day:</strong> {hour.dayOfWeek}</p>
                             <p><strong>Time:</strong> {hour.startTime} - {hour.endTime}</p>
                             <p><strong>Status:</strong> <span className={`status-${hour.status}`}>{hour.status}</span></p>
+
+                            <button onClick={() => handleViewQueue(hour.id)} className="view-queue-btn">
+                                {selectedOfficeHour === hour.id ? 'Hide Queue' : 'View Queue'}
+                            </button>
+
+                            {selectedOfficeHour === hour.id && (
+                                <div className="queue-section">
+                                    <h4>Queue</h4>
+                                    <p>Queue will appear here...</p>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
