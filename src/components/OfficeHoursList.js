@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import Queue from './Queue';
 
 function OfficeHoursList () {
     const [officeHours, setOfficeHours] = useState([]);
@@ -50,10 +51,7 @@ function OfficeHoursList () {
                             </button>
 
                             {selectedOfficeHour === hour.id && (
-                                <div className="queue-section">
-                                    <h4>Queue</h4>
-                                    <p>Queue will appear here...</p>
-                                </div>
+                                <Queue officeHourId={hour.id} />
                             )}
                         </div>
                     ))}
