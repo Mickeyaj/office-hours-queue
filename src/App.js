@@ -6,6 +6,7 @@ import Home from './components/Home';
 import ProfessorPage from './pages/ProfessorPage';
 import StudentPage from './pages/StudentPage';
 import Login from './components/Auth/Login';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
 
 function App() {
   return (
@@ -16,6 +17,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/professor/login" element={<Login role="professor" />} />
             <Route path="/student/login" element={<Login role="student" />} />
+            <Route path="/professor"
+              element={<ProtectedRoute role="professor"><ProfessorPage /></ProtectedRoute>}
+            />
+            <Route path="/student" element={<ProtectedRoute role="student"><StudentPage /></ProtectedRoute>}
+            />
             <Route path="/professor" element={<ProfessorPage />} />
             <Route path="/student" element={<StudentPage />} />
           </Routes>
