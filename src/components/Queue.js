@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, orderBy, doc, deleteDoc } from 'firebase/firestore';
 
 function Queue({ officeHourId }) {
     const [queuedStudents, setQueuedStudents] = useState([]);
@@ -27,6 +27,17 @@ function Queue({ officeHourId }) {
         return () => unsubscribe();
     }, [officeHourId]);
 
+    const handleCallNext = async (studentId) => {
+        try {
+            const { doc, deleteDoc } = await import('firebase/firestore');
+            await deleteDoc(doc(db, 'queues', studentId));
+            console.log('Called next student, removed from queue');
+        } catch (error) {
+            console.error('Failed to call next student:', error);
+            alert('Error removing student from queue');
+        }
+    };
+
     return (
         <div className="queue-section">
             <h4>Queue</h4>
@@ -45,7 +56,7 @@ function Queue({ officeHourId }) {
                             </div>
                             <div className="queue-actions">
                                 {index === 0 && (
-                                    <button className="next-btn">Call Next</button>
+                                    <button className="next-btn" onClick={() => handleCallNext(student.id)}>Call Next</button>
                                 )}
                             </div>
                         </div>
