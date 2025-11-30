@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { db } from '../firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 function CreateOfficeHours() {
     const [professorName, setProfessorName] = useState('');
@@ -7,22 +9,32 @@ function CreateOfficeHours() {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log({
-            professorName,
-            courseName,
-            dayOfWeek,
-            startTime,
-            endTime
-        });
+        try {
+            const docRef = await addDoc(collection(db, 'officeHours'), {
+                professorName,
+                courseName,
+                dayOfWeek,
+                startTime,
+                endTime,
+                status: 'active',
+                createdAt: new Date()
+            });
 
-        setProfessorName('');
-        setCourseName('');
-        setDayOfWeek('Monday');
-        setStartTime('');
-        setEndTime('');
+            console.log('Office hours created with ID:', docRef.id);
+            alert('Office hours created successfully');
+
+            setProfessorName('');
+            setCourseName('');
+            setDayOfWeek('Monday');
+            setStartTime('');
+            setEndTime('');
+        } catch (error) {
+            console.error('Error creating office hours:', error);
+            alert('Error creating office hours. Check console');
+        }
     };
 
     return (
