@@ -1,0 +1,108 @@
+/* Create Office Hours Styling */
+.create-office-hours {
+    max-width: 500 px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.create-office-hours h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.create-office-hours form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input, .form-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Office Hours List Styling */
+.office-hours-list {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.office-hours-list h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.office-hours-list .no-hours {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.office-hour-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.office-hour-card h3 {
+    margin-top: 0;
+    color: #007bff;
+}
+
+.office-hour-card p {
+    margin: 8px 0;
+    color: #555;
+}
+
+.office-hour-card p strong {
+    color: #333;
+}
+
+.status-active {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-paused {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.status-ended {
+    color: #dc3545;
+    font-weight: bold;
+}
