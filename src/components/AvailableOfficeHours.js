@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot, query, where, addDoc } from 'firebase/firestore';
 
-function AvailableOfficeHours() {
+function AvailableOfficeHours({ studentName }) {
     const [officeHours, setOfficeHours] = useState([]);
     const [selectedOfficeHour, setSelectedOfficeHour] = useState(null);
-    const [studentName, setStudentName] = useState('');
     const [reason, setReason] = useState('');
 
     useEffect(() => {
@@ -41,7 +40,6 @@ function AvailableOfficeHours() {
             });
             alert('Successfully joined the queue!');
 
-            setStudentName('');
             setReason('');
             setSelectedOfficeHour(null);
         } catch (error) {
@@ -51,7 +49,6 @@ function AvailableOfficeHours() {
     };
 
     const handleCancelJoin = () => {
-        setStudentName('');
         setReason('');
         setSelectedOfficeHour(null);
     };
@@ -82,10 +79,6 @@ function AvailableOfficeHours() {
                     <div className="modal-content">
                         <h3>Join queue for {selectedOfficeHour.professorName}</h3>
                         <form onSubmit={handleJoinQueue}>
-                            <div className="form-group">
-                                <label>Your Name:</label>
-                                <input type="text" value={studentName} onChange={(e) => setStudentName(e.target.value)} required />
-                            </div>
                             <div className="form-group">
                                 <label>Reason for visit (optional):</label>
                                 <textarea value={reason} onChange={(e) => setReason(e.target.value)} rows="3" />
