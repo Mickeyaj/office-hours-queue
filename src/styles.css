@@ -196,3 +196,62 @@
 .next-btn:hover {
     background-color: #0056b3;
 }
+
+/* Home Page styling */
+。home-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.home-container h1 {
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.home-container p {
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.role-selection {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.role-btn {
+    width: 250px;
+    padding: 30px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.role-btn:hover {
+    transform: translate(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.professor-btn:hover {
+    border-color: #007bff;
+}
+
+.student-btn:hover {
+    border-color: #28a745;
+}
+
+.role-btn h2 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.role-btn p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
