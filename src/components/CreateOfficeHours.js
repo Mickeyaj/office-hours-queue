@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
-function CreateOfficeHours() {
-    const [professorName, setProfessorName] = useState('');
+function CreateOfficeHours({ professorName }) {
     const [courseName, setCourseName] = useState('');
     const [dayOfWeek, setDayOfWeek] = useState('Monday');
     const [startTime, setStartTime] = useState('');
@@ -26,7 +25,6 @@ function CreateOfficeHours() {
             console.log('Office hours created with ID:', docRef.id);
             alert('Office hours created successfully');
 
-            setProfessorName('');
             setCourseName('');
             setDayOfWeek('Monday');
             setStartTime('');
@@ -41,10 +39,6 @@ function CreateOfficeHours() {
         <div className="create-office-hours">
             <h2>Create Office Hours</h2>
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Professor Name:</label>
-                    <input type="text" value={professorName} onChange={(e) => setProfessorName(e.target.value)} required />
-                </div>
                 <div className="form-group">
                     <label>Course Name:</label>
                     <input type="text" value={courseName} onChange={(e) => setCourseName(e.target.value)} placeholder="e.g., CS 121" required />

@@ -17,7 +17,7 @@ function StudentPage() {
                 try {
                     const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
                     if (userDoc.exists()) {
-                        setStudentName(UNSAFE_DataRouterContext.data().name);
+                        setStudentName(userDoc.data().name);
                     }
                 } catch (error) {
                     console.error('Error fetching user data', error);
