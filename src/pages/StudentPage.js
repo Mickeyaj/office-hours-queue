@@ -1,33 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AvailableOfficeHours from '../components/AvailableOfficeHours';
 import MyQueueStatus from '../components/MyQueueStatus';
+import { useAuth } from '../contexts/AuthContext';
+import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 function StudentPage() {
     const [studentName, setStudentName] = useState('');
-    const [isNameSet, setIsNameSet] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const { currentUser } = useAuth();
 
-    const handleSetName = (e) => {
-        e.preventDefault();
-        if (studentName.trim()) {
-            setIsNameSet(true);
+    useEffect(() => {
+        async function fetchUserData() {
+            if (currentUser) {
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+                    if (userDoc.exists()) {
+                        setStudentName(UNSAFE_DataRouterContext.data().name);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data', error);
+                }
+                setLoading(false);
+            }
         }
-    }
+        fetchUserData();
+    }, [currentUser]);
 
-    if (!isNameSet) {
+    if (loading) {
         return (
-            <div className="student-page">
-                <h1>Student Dashboard</h1>
-                <div className="name-entry">
-                    <h3>Enter your name to continue:</h3>
-                    <form onSubmit={handleSetName}>
-                        <div className="form-group">
-                            <input type="text" value={studentName} onChange={(e) => setStudentName(e.target.value)} required />
-                        </div>
-                        <button type="submit" className="submit-btn">
-                            Continue
-                        </button>
-                    </form>
+            <div>
+                <Navbar />
+                <div className="page-content">
+                    <p>Loading</p>
                 </div>
             </div>
         );
