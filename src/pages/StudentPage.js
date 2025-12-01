@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
 import AvailableOfficeHours from '../components/AvailableOfficeHours';
 import MyQueueStatus from '../components/MyQueueStatus';
 
@@ -32,10 +33,13 @@ function StudentPage() {
         );
     }
     return (
-        <div className="student-page">
-            <h1>Welcome, {studentName}</h1>
-            <MyQueueStatus studentName={studentName} />
-            <AvailableOfficeHours studentName={studentName} />
+        <div>
+            <Navbar />
+            <div className="page-content">
+                <h1>Welcome, {studentName}</h1>
+                <MyQueueStatus studentName={studentName} />
+                <AvailableOfficeHours studentName={studentName} />
+            </div>
         </div>
     );
 }

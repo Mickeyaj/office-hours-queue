@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { db } from '../../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 function Login({ role }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const [isSignUp, setIsSignUp] = useState('false');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -20,7 +23,15 @@ function Login({ role }) {
             setLoading(true);
 
             if (isSignUp) {
-                await signup(email, password);
+                const userCredential = await signup(email, password);
+                const user = userCredential.user;
+
+                await setDoc(doc(db, 'users', user.uid), {
+                    email: email,
+                    name: name,
+                    role: role,
+                    createdAt: new Date()
+                });
             } else {
                 await login(email, password);
             }
@@ -40,6 +51,12 @@ function Login({ role }) {
             {error && <div className="error-message">{error}</div>}
 
             <form onSubmit={handleSubmit}>
+                {isSignUp && (
+                    <div className="form-group">
+                        <label>Name:</label>
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+                    </div>
+                )}
                 <div className="form-group">
                     <label>Email:</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
