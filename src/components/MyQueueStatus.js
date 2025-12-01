@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, query, where, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, deleteDoc, getDoc } from 'firebase/firestore';
 
 function MyQueueStatus({ studentName }) {
     const [myQueue, setMyQueue] = useState(null);
@@ -17,7 +17,10 @@ function MyQueueStatus({ studentName }) {
         );
 
         const unsubscribe = onSnapshot(q, async (snapshot) => {
+            console.log('Queue snapshot size:', snapshot.size);
+            console.log('snapshot empty? ', snapshot.empty);
             if (snapshot.empty) {
+                console.log('No queue found for student');
                 setMyQueue(null);
                 setPosition(0);
                 setOfficeHourInfo(null);
@@ -27,14 +30,17 @@ function MyQueueStatus({ studentName }) {
                 id: snapshot.docs[0].id,
                 ...snapshot.docs[0].data()
             };
+            console.log('Queue data', queueData);
             setMyQueue(queueData);
 
-            const officeHourDoc = await import('firebase/firestore').then(module =>
-                module.getDoc(module.doc(db, 'officeHours', queueData.officeHourId))
-            );
-
-            if (officeHourDoc.exists()) {
-                setOfficeHourInfo(officeHourDoc.data());
+            try {
+                const officeHourDoc = await getDoc(doc(db, 'officeHours', queueData.officeHourId));
+                console.log('Office hour doc exists?', officeHourDoc.exists());
+                if (officeHourDoc.exists()) {
+                    setOfficeHourInfo(officeHourDoc.data());
+                }
+            } catch (error) {
+                console.error('Error fetching office hour info', error);
             }
 
             const allInQueue = query(
@@ -54,6 +60,7 @@ function MyQueueStatus({ studentName }) {
 
                 students.sort((a, b) => a.joinedAt.toDate() - b.joinedAt.toDate());
                 const myPosition = students.findIndex(s => s.id === queueData.id) + 1;
+                console.log('My position', myPosition);
                 setPosition(myPosition);
             });
         });
@@ -85,7 +92,7 @@ function MyQueueStatus({ studentName }) {
             <h3>Your Queue Status</h3>
             <div className="queue-status-card">
                 <div className="status-info">
-                    <p className="position-display">PositionL <strong>#{position}</strong></p>
+                    <p className="position-display">Position: <strong>#{position}</strong></p>
                     {officeHourInfo && (
                         <>
                             <p><strong>Course:</strong> {officeHourInfo.courseName}</p>
@@ -95,6 +102,12 @@ function MyQueueStatus({ studentName }) {
                     )}
                     {myQueue.reason && (
                         <p><strong>Your reason:</strong> {myQueue.reason}</p>
+                    )}
+                    {myQueue.professorNote && (
+                        <div className="student-note-display">
+                            <p><strong>Professor's Note:</strong></p>
+                            <p className="note-content">{myQueue.professorNote}</p>
+                        </div>
                     )}
                 </div>
                 <button className="leave-queue-btn" onClick={handleLeaveQueue}>

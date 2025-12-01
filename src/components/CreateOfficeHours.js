@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
+
 function CreateOfficeHours({ professorName }) {
     const [courseName, setCourseName] = useState('');
     const [dayOfWeek, setDayOfWeek] = useState('Monday');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
+    const [isRecurring, setIsRecurring] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,6 +20,7 @@ function CreateOfficeHours({ professorName }) {
                 dayOfWeek,
                 startTime,
                 endTime,
+                isRecurring: isRecurring,
                 status: 'active',
                 createdAt: new Date()
             });
@@ -27,6 +30,7 @@ function CreateOfficeHours({ professorName }) {
 
             setCourseName('');
             setDayOfWeek('Monday');
+            setIsRecurring(false);
             setStartTime('');
             setEndTime('');
         } catch (error) {
@@ -60,6 +64,12 @@ function CreateOfficeHours({ professorName }) {
                 <div className="form-group">
                     <label>End Time:</label>
                     <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>
+                        <input type="checkbox" checked={isRecurring} onChange={(e) => setIsRecurring(e.target.value)} />
+                        <span>Repeat weekly</span>
+                    </label>
                 </div>
 
                 <button type="submit" className="submit-btn">Create Office Hours</button>

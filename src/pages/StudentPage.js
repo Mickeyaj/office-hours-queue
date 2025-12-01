@@ -13,10 +13,14 @@ function StudentPage() {
 
     useEffect(() => {
         async function fetchUserData() {
+            console.log('Fetching user data, currentUser:', currentUser);
             if (currentUser) {
+                console.log('YOUR USER ID:', currentUser.uid);
                 try {
                     const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+                    console.log('User doc exists?', userDoc.exists());
                     if (userDoc.exists()) {
+                        console.log('User data', userDoc.data());
                         setStudentName(userDoc.data().name);
                     }
                 } catch (error) {
@@ -27,6 +31,8 @@ function StudentPage() {
         }
         fetchUserData();
     }, [currentUser]);
+
+    console.log('StudentPage - studentName', studentName, 'loading:', loading);
 
     if (loading) {
         return (

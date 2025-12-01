@@ -40,7 +40,7 @@ function OfficeHoursList () {
                 <div>
                     {officeHours.map((hour) => (
                         <div key={hour.id} className="office-hour-card">
-                            <h3>{hour.courseName}</h3>
+                            <h3>{hour.courseName} {hour.isRecurring && <span className="recurring-badge">Recurring</span>}</h3>
                             <p><strong>Professor: </strong> {hour.professorName}</p>
                             <p><strong>Day:</strong> {hour.dayOfWeek}</p>
                             <p><strong>Time:</strong> {hour.startTime} - {hour.endTime}</p>
