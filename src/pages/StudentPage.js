@@ -5,10 +5,12 @@ import MyQueueStatus from '../components/MyQueueStatus';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { requestNotificationPermission } from '../utils/notifications';
 
 function StudentPage() {
     const [studentName, setStudentName] = useState('');
     const [loading, setLoading] = useState(true);
+    const [notificationsEnabled, setNotificationsEnabled] = useState(false);
     const { currentUser } = useAuth();
 
     useEffect(() => {
@@ -30,7 +32,21 @@ function StudentPage() {
             }
         }
         fetchUserData();
+
+        if (Notification.permission === 'granted') {
+            setNotificationsEnabled(true);
+        }
     }, [currentUser]);
+
+    const handleEnableNotifications = async () => {
+        const granted = await requestNotificationPermission();
+        setNotificationsEnabled(granted);
+        if (granted) {
+            alert('Notifications enabled! You\'ll be notified when you\'re next in line.');
+        } else {
+            alert('Notifications were denied. Please enable them in your browser settings');
+        }
+    }
 
     console.log('StudentPage - studentName', studentName, 'loading:', loading);
 
@@ -49,6 +65,14 @@ function StudentPage() {
             <Navbar />
             <div className="page-content">
                 <h1>Welcome, {studentName}</h1>
+                {!notificationsEnabled && (
+                    <button classname="enable-notifications-btn" onClick={handleEnableNotifications}>
+                        Enable Notifications
+                    </button>
+                )}
+                {notificationsEnabled && (
+                    <span className="notification-status">Notification enabled</span>
+                )}
                 <MyQueueStatus studentName={studentName} />
                 <AvailableOfficeHours studentName={studentName} />
             </div>
