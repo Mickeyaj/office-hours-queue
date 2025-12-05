@@ -630,3 +630,38 @@
     font-style: italic;
     font-size: 14px;
 }
+
+/* Student Header Styling */
+.student-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.student-header h1 {
+    margin: 0;
+}
+
+.enable-notification-btn {
+    padding: 10px 20px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.enable-notification-btn:hover {
+    background-color: #138496;
+}
+
+.notification-status {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 14px;
+}

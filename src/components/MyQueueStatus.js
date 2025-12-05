@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, query, where, onSnapshot, doc, deleteDoc, getDoc } from 'firebase/firestore';
+import { sendNotification } from '../utils/notifications';
 
 function MyQueueStatus({ studentName }) {
     const [myQueue, setMyQueue] = useState(null);
@@ -67,6 +68,18 @@ function MyQueueStatus({ studentName }) {
 
         return () => unsubscribe();
     }, [studentName]);
+
+    useEffect(() => {
+        if (position === 1 && myQueue && officeHourInfo) {
+            sendNotification("You're next in line!",
+                {
+                    body: `Office hours for ${officeHourInfo.courseName} with ${officeHourInfo.professorName}`,
+                    tag: 'queue-position',
+                    requireInteraction: true
+                }
+            )
+        }
+    }, [position, myQueue, officeHourInfo]);
 
     const handleLeaveQueue = async () => {
         if (!myQueue) return;
