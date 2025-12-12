@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import { useAuth } from '../contexts/AuthContext';
 
 
 function CreateOfficeHours({ professorName }) {
@@ -10,11 +11,14 @@ function CreateOfficeHours({ professorName }) {
     const [endTime, setEndTime] = useState('');
     const [isRecurring, setIsRecurring] = useState(false);
 
+    const { currentUser } = useAuth();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const docRef = await addDoc(collection(db, 'officeHours'), {
+                professorId: currentUser.uid,
                 professorName,
                 courseName,
                 dayOfWeek,
@@ -26,7 +30,7 @@ function CreateOfficeHours({ professorName }) {
             });
 
             console.log('Office hours created with ID:', docRef.id);
-            alert('Office hours created successfully');
+            alert(`Office hours created successfully!${isRecurring ?  ' This will repeat weekly.' : ''}`);
 
             setCourseName('');
             setDayOfWeek('Monday');

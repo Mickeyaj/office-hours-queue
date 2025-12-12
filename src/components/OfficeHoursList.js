@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { useAuth } from '../contexts/AuthContext';
 import Queue from './Queue';
 
 function OfficeHoursList () {
     const [officeHours, setOfficeHours] = useState([]);
     const [selectedOfficeHour, setSelectedOfficeHour] = useState(null);
+    const { currentUser } = useAuth();
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, 'officeHours'), (snapshot) => {
+        if(!currentUser) return;
+
+        const q = query(
+            collection(db, 'officeHours'),
+            where('professorId', '==', currentUser.uid)
+        );
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
             const hoursData = [];
             snapshot.forEach((doc) => {
                 hoursData.push({
@@ -21,7 +30,7 @@ function OfficeHoursList () {
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [currentUser]);
 
     const handleViewQueue = (officeHourId) => {
         if (selectedOfficeHour === officeHourId) {
