@@ -18,20 +18,20 @@ A real-time web applicationt aht streamlines the office hour experience for coll
 
 ### Installation
 1. **Clone the Repository**
-    git clone https://github.com/Mickeyaj/office-hours-queue.git
-    cd office-hours-queue
+    - git clone https://github.com/Mickeyaj/office-hours-queue.git
+    - cd office-hours-queue
 2. **Install Dependencies**
-    npm install
+    - npm install
 3. **Set up Firebase**
-    Create a new Firebase project at Firebase console
-    Enable Authentication (Email/Password)
-    Enable Cloud Firestore
-    Copy your Firebase config
+    - Create a new Firebase project at Firebase console
+    - Enable Authentication (Email/Password)
+    - Enable Cloud Firestore
+    - Copy your Firebase config
 4. **Configure Firebase**
-    Update `src/firebase.js` with your Firebase configuration
+    - Update `src/firebase.js` with your Firebase configuration
 5. **Run the development server**
-    npm start
-    Open in localhost
+    - npm start
+    - Open in localhost
 
 ### Deployment
     The app is deployed using Firebase Hosting:
